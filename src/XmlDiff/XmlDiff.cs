@@ -391,13 +391,8 @@ public class XmlDiff
     private void OpenDocuments( String sourceFile, String changedFile, 
                                 ref XmlReader sourceReader, ref XmlReader changedReader )
     {
-        XmlTextReader tr = new XmlTextReader( sourceFile );
-        tr.XmlResolver = null;
-        sourceReader = tr;
-        
-        tr = new XmlTextReader( changedFile );
-        tr.XmlResolver = null;
-        changedReader = tr;
+        sourceReader = XmlReader.Create( sourceFile );
+        changedReader = XmlReader.Create( changedFile );
     }
 
     private void OpenFragments( String sourceFile, String changedFile, 
@@ -422,13 +417,14 @@ public class XmlDiff
             sourceStream = new FileStream(sourceFile, FileMode.Open, FileAccess.Read);
             changedStream = new FileStream(changedFile, FileMode.Open, FileAccess.Read);
 
-            XmlTextReader tr = new XmlTextReader(sourceStream, XmlNodeType.Element, sourceParserContext);
-            tr.XmlResolver = null;
-            sourceReader = tr;
+            var settings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Fragment };
+            sourceReader = XmlReader.Create(sourceStream, settings, sourceParserContext);
+                //sourceReader.NodeType = XmlNodeType.Element;
 
-            tr = new XmlTextReader(changedStream, XmlNodeType.Element, changedParserContext);
-            tr.XmlResolver = null;
-            changedReader = tr;
+            //tr = new XmlTextReader(changedStream, XmlNodeType.Element, changedParserContext);
+            //tr.XmlResolver = null;
+            //changedReader = tr;
+            sourceReader = XmlReader.Create(changedStream, settings, changedParserContext);
         }
         catch
         {

@@ -76,8 +76,8 @@ public class XmlPatch
             NameTable nt = new NameTable();
             using (var file = new FileStream(sourceFile, FileMode.Open, FileAccess.Read))
             {
-                XmlTextReader tr = new XmlTextReader(file,
-                                                    XmlNodeType.Element,
+                XmlReader tr = XmlReader.Create(file,
+                                                    new XmlReaderSettings(),
                                                     new XmlParserContext(nt, new XmlNamespaceManager(nt),
                                                                         string.Empty, XmlSpace.Default));
                 Patch(tr, outputStream, diffDoc);

@@ -676,7 +676,7 @@
             Destructor
             </summary>
         </member>
-        <member name="M:Microsoft.XmlDiffPatch.XmlDiffView.Load(System.Xml.XmlTextReader,System.Xml.XmlReader)">
+        <member name="M:Microsoft.XmlDiffPatch.XmlDiffView.Load(System.Xml.XmlReader,System.Xml.XmlReader)">
             <summary>
             Loads the diffgram to an XmlDocument object, and drives the 
             process of loading the baseline xml file to a 
@@ -911,7 +911,7 @@
             </summary>
             <param name="diffgramDoc">diffgram data</param>
         </member>
-        <member name="M:Microsoft.XmlDiffPatch.XmlDiffView.LoadSourceChildNodes(Microsoft.XmlDiffPatch.XmlDiffViewParentNode,System.Xml.XmlTextReader,System.Boolean)">
+        <member name="M:Microsoft.XmlDiffPatch.XmlDiffView.LoadSourceChildNodes(Microsoft.XmlDiffPatch.XmlDiffViewParentNode,System.Xml.XmlReader,System.Boolean)">
             <summary>
             Recurses through the baseline document loading the
             contents to the XmlDiffViewDocument object and tagging

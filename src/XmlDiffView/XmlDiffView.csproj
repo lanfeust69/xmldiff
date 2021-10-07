@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-    <DocumentationFile>d:\git\lovettchris\xmldiff\src\XmlDiffView\XmlDiffPatch.View.xml</DocumentationFile>
+    <DocumentationFile>XmlDiffPatch.View.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

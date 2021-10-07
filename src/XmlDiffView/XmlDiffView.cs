@@ -263,7 +263,7 @@ namespace Microsoft.XmlDiffPatch
         /// </summary>
         /// <param name="sourceXml">baseline data</param>
         /// <param name="diffGram">diffgram data stream</param>
-        public void Load(XmlTextReader sourceXml, XmlReader diffGram)
+        public void Load(XmlReader sourceXml, XmlReader diffGram)
         {
             nextOperationId = 1;
 
@@ -1048,11 +1048,12 @@ namespace Microsoft.XmlDiffPatch
         /// <param name="emptyElement">Node has no children</param>
         private void LoadSourceChildNodes(
             XmlDiffViewParentNode parent,
-            XmlTextReader reader,
+            XmlReader reader,
             bool emptyElement)
         {
             LoadState savedLoadState = this.loadState;
             this.loadState.Reset();
+            var lineInfo = reader as IXmlLineInfo;
 
             // load attributes
             while (reader.MoveToNextAttribute())
@@ -1083,7 +1084,8 @@ namespace Microsoft.XmlDiffPatch
                         reader.NamespaceURI,
                         attrValue);
                 }
-                attr.LineNumber = reader.LineNumber;
+                if (lineInfo != null)
+                    attr.LineNumber = lineInfo.LineNumber;
                 ((XmlDiffViewElement)parent).InsertAttributeAfter(
                     attr,
                     this.loadState.LastAttribute);
@@ -1114,7 +1116,8 @@ namespace Microsoft.XmlDiffPatch
                             reader.Prefix,
                             reader.NamespaceURI,
                             this.ignorePrefixes);
-                        elem.LineNumber = reader.LineNumber;
+                        if (lineInfo != null)
+                            elem.LineNumber = lineInfo.LineNumber;
                         this.LoadSourceChildNodes(elem, reader, emptyElementNode);
                         child = elem;
                         break;
@@ -1166,7 +1169,8 @@ namespace Microsoft.XmlDiffPatch
                         }
                         break;
                     case XmlNodeType.EndElement:
-                        parent.EndLine = reader.LineNumber;
+                        if (lineInfo != null)
+                            parent.EndLine = lineInfo.LineNumber;
                         goto End;
 
                     case XmlNodeType.DocumentType:
@@ -1187,9 +1191,9 @@ namespace Microsoft.XmlDiffPatch
                 }
                 if (child != null)
                 {
-                    if (child.LineNumber == 0 && child.EndLine == 0)
+                    if (child.LineNumber == 0 && child.EndLine == 0 && lineInfo != null)
                     {
-                        child.LineNumber = child.EndLine = reader.LineNumber;
+                        child.LineNumber = child.EndLine = lineInfo.LineNumber;
                     }
                     parent.InsertChildAfter(child, this.loadState.LastChild, true);
                     this.loadState.LastChild = child;
